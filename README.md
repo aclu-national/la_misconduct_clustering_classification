@@ -6,4 +6,3 @@ The clustering code uses TF-IDF, all-MiniLM-L6-v2, and DistilBERT base model (un
 
 <img width="1329" alt="Screenshot 2024-07-22 at 5 40 15 PM" src="https://github.com/user-attachments/assets/6dcb5b81-796b-4da7-af6f-92b57cd91e30">
 
-## Classifying 
