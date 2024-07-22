@@ -34,7 +34,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 # Importing Data
-allegation_link = "/Users/eappelson/JL_dashboard/data/misconduct_data/data_allegation.csv"
+allegation_link = "data_allegation.csv"
 df = pd.read_csv(allegation_link)
 
 # Defining stop words, lemmatization, and preprocess from 
