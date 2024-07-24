@@ -46,11 +46,11 @@ The process of our classification is as such:
 4. Define our Support Vector Classifier, letting probabilities be true, and our MultiOutputClassifier.
 5. Creating a model pipeline with TF-IDF tokenization and a maximum of 500 features.
 6. Fitting our model on the training data using a randomized search cross validation with 10 iterations and 10 folds along with potentional parameters of a C value between 0.1 and 10, a linear and radial kernal, and gamma as scale and auto.
-7. Computing broad and variable-specific model metrics of our model on the test and training data.
+7. Computing broad and variable-specific model metrics of our model on the test and training data. 
 
 **Note: The classification will include TF-IDF, all-MiniLM-L6-v2, and DistilBERT base model (uncased) embeddings along with other model types including a Random Forest classifier, a Bidirectional Reccurent Nueral Network, and a BERT classification model soon**
 
-We found that the best multi-label classifier had `C=4.27022004702574` and linear kernel.
+We found that the best multi-label classifier had `C=4.27022004702574` and linear kernel. We also found that this model was quite good.
 
 The overall metrics of the model include: 
 
@@ -107,3 +107,13 @@ Traffic Violation|1.0|0.33|0.98|1|99|0|2|0.33|1.0|0.0|0.67
 Truthfulness|0.75|0.75|0.98|3|97|1|1|0.75|0.99|0.01|0.25
 Use of Force|0.78|0.88|0.97|7|92|2|1|0.88|0.98|0.02|0.12
 Weapon Violation|0.0|0.0|0.97|0|99|1|2|0.0|0.99|0.01|1.0
+
+However, it is important to note the mistakes as well. 
+
+Here is an example of the model being fit on new sentences not in the training or test data.
+
+`predict("neglect of duty and false or inaccurate reports", pipeline)` gives us: "Neglect of Duty" and "Truthfulness" (correct).
+
+`predict("rule 02: moral conduct; paragraph 02: courtesy", pipeline)` gives us: "Discourtesy" (correct).
+
+`predict("unauthorized force/physical intimidation", pipeline)` gives us: "Intimidation and Retaliation", "Prison-related Violation", and "Use of Force" (incorrect).
