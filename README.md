@@ -26,14 +26,12 @@ The process of our clustering is as such:
 3. Fit a Uniform Manifold Approximation and Projection (UMAP) model with 15 nearest neighbors, a minimum distance of 0.1, 2 components, and a cosine metric on each of the three embeddings for dimensionality reduction.
 4. Hierarchical Density-Based Spatial Clustering of Applications with Noise (HBSCAN) model with a minimum cluster size of 20 and a euclidean distance metric on each of the dimensionally reduced embeddings to cluster the text.
 
-Here is an example of what the final clustering of a phrase may look like:
+Here is an example of the final clustering for the cleaned allegation and allegation description pair "neglect duty":
 cleaned_sentence | cluster | x | y |
 --- | --- | ---| ---|
 |neglect duty|   13  |2.6262362003326416|1.1222500801086426 |
 
 **Note: A limitation of our cluster is that it only allows for single-label classification**
-
-Below is an image of the cluster utilizing the TF-IDF Tokenization:
 
 <img width="1329" alt="Screenshot 2024-07-22 at 5 40 15 PM" src="https://github.com/user-attachments/assets/6dcb5b81-796b-4da7-af6f-92b57cd91e30">
 
@@ -42,13 +40,17 @@ Below is an image of the cluster utilizing the TF-IDF Tokenization:
 The purpose of the classification is to classify each of our allegation and allegation description pairs into one or multiple of the 39 categories provided above. To build this model we need to recognize certain limitations including that our sample of allegations may, and likely does not, represents all potential categories of misconduct in Louisiana. We also must recognize that the limited training data will likely diminish its predictive accuracy. Finally, it is important to note that the model will reflect the biases of the human classifier in choosing the categories for the sample of 500 allegation and allegation description pairs. 
 
 The process of our classification is as such:
-1. 
-
+1. Clean all unique allegation and allegation descriptions from `labelled_data.csv` and concatinate them into a single variable.
+2. Use `MultiLabelBinarizer` to transform our classification lists into 39 unique variables and combine this with our original single variable allegation and allegation description pairs.
+3. Split our data into a 80-20 (400 training, 100 test) train-test split using a random state of 1.
+4. Define our Support Vector Classifier, letting probabilities be true, and our MultiOutputClassifier.
+5. Creating a model pipeline with TF-IDF tokenization and a maximum of 500 features.
+6. Fitting our model on the training data using a randomized search cross validation with 10 iterations and 10 folds along with potentional parameters of a C value between 0.1 and 10, a linear and radial kernal, and gamma as scale and auto.
+7. Computing broad and variable-specific model metrics of our model on the test and training data.
 
 **Note: The classification will include TF-IDF, all-MiniLM-L6-v2, and DistilBERT base model (uncased) embeddings along with other model types including a Random Forest classifier, a Bidirectional Reccurent Nueral Network, and a BERT classification model soon**
 
-
-For the classification we use TF-IDF for tokenizing the text. We then fit a Support Vector Classifier for multi-label classification using a 80-20 split and random search cross validation with 10 folds. The best multi-label classifier had C=4.27022004702574 and linear kernel.
+We found that the best multi-label classifier had `C=4.27022004702574` and linear kernel.
 
 The overall metrics of the model include: 
 
