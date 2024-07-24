@@ -1,5 +1,16 @@
 # Clustering and Classifying Misconduct Allegations in Louisiana
 
+## Purpose
+Categorizing police misconduct is difficult. Our allegation data the `allegation` (the allegation) and `allegation_desc` (the allegation description, though infrequently used) columns of `data_allegation.csv`, includes 39,885 allegations of misconduct across hundreds of agencies in Louisiana. Out of these allegations, we downloaded a random sample of 500 unique allegation and allegation description pairs and hand categorized them into 39 labels, allowing for a single allegation-allegation description pair to have multiple labels. 
+
+Here is an example of what one row:
+allegation | allegation_desc | classification|
+--- | --- | --- |
+rule 2: moral conduct; paragraph 01 - adherence to law|r.s 14:37.7 relative to domestic abuse assault|Adherence to Law, Domestic Violence|
+2:14: failure to secure property or evidence|      nan      |Handling Evidence Violation|
+
+It is challenging to classify these allegations as every law enforcement agency has their own way of classifying the allegations, some including more and some including much less information. Our goal is to determine appropriate categories and then to fit the allegation data into these categories. Specifically, we use clustering algorithms to determine potential categorizations and then use a Support Vector Classifier to classify the allegations into these categories. 
+
 ## Clustering
 
 The clustering code uses TF-IDF, all-MiniLM-L6-v2, and DistilBERT base model (uncased) embeddings, Uniform Manifold Approximation and Projection (UMAP) dimensionality reduction, and Hierarchical Density-Based Spatial Clustering of Applications with Noise (HBSCAN) clustering. Please see the code for specific parameters.
@@ -20,7 +31,10 @@ Recall | 0.95 | 0.68 |
 Precision | 0.99 | 0.86 |
 AUC | 0.98 | 0.84 |
 
-Note: the accuracy is quite low.
+**Note: the accuracy is quite low.**
+
+The variable-specific metrics of the model include:
+
 Label | Test Precision | Test Recall | Test Accuracy | Test TP | Test TN | Test FP | Test FN | Test TP Rate | Test TN Rate | Test FP Rate | Test FN Rate |
 --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 Abuse of Authority | 1.0 | 0.25 | 0.97 | 1 | 96 | 0 | 3 | 0.25 | 1.0 | 0.0 | 0.75 |
